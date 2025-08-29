@@ -54,6 +54,7 @@ if($editar_id){
         <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
     </form>
     </div>
+
     <?php endif; ?>
 
     <?php

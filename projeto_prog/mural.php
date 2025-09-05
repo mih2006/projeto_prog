@@ -97,32 +97,27 @@ $(document).ready(function() {
 
 
         <div class="email-card">
-            <form class="email-form" id="contactForm">
+            <!-- FORMULÁRIO CORRIGIDO - Alterações realizadas aqui -->
+            <form class="email-form" id="mural" method="post">
                 <div class="form-group">
-                    <label for="name">Nome Completo</label>
-                    <input type="text" id="name" placeholder="Digite seu nome completo" required />
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required />
                 </div>
 
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" placeholder="seu@email.com" required />
+                    <input type="email" id="email" name="email" placeholder="seu@email.com" required />
                 </div>
 
 
                 <div class="form-group">
-                    <label for="subject">Assunto</label>
-                    <input type="text" id="subject" placeholder="Assunto do pedido" required />
+                    <label for="msg">Mensagem</label>
+                    <textarea id="msg" name="msg" placeholder="Descreva seu pedido em detalhes..." required></textarea>
                 </div>
 
 
-                <div class="form-group">
-                    <label for="message">Mensagem</label>
-                    <textarea id="message" placeholder="Descreva seu pedido em detalhes..." required></textarea>
-                </div>
-
-
-                <button type="submit" class="submit-btn">Enviar Pedido</button>
+                <button type="submit" name="cadastra" class="submit-btn">Enviar Pedido</button>
             </form>
 
 

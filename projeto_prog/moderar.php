@@ -25,13 +25,6 @@ function deletarImagemCloudinary($public_id, $cloud_name, $api_key, $api_secret)
     return json_decode($response, true);
 }
 
-/*
-COMPARAÇÃO: No código de recados/pedidos
-- Não há função de deletar arquivos
-- Não existe upload de imagem
-- Apenas se deleta o registro do banco
-*/
-
 // Excluir produto
 if(isset($_GET['excluir'])) {
     $id = intval($_GET['excluir']);
@@ -47,15 +40,9 @@ if(isset($_GET['excluir'])) {
     }
 
     mysqli_query($conexao, "DELETE FROM produtos WHERE id = $id") or die("Erro ao excluir: " . mysqli_error($conexao));
-    header("Location: moderar.php"); //substituir se estiver diferente
+    header("Location: moderar.php");
     exit;
 }
-
-/*
-COMPARAÇÃO:
-- Código de recados/pedidos: deletar não manipula imagens, só remove o registro
-- Aqui é necessário deletar a imagem no Cloudinary antes de excluir do banco
-*/
 
 // Editar produto
 if(isset($_POST['editar'])) {
@@ -70,22 +57,9 @@ if(isset($_POST['editar'])) {
     exit;
 }
 
-/*
-COMPARAÇÃO:
-- Código de recados/pedidos: não há edição inline
-- Aqui o sistema permite editar nome, descrição e preço, mas não imagem
-*/
-
-
 // Selecionar produtos para exibição
 $editar_id = isset($_GET['editar']) ? intval($_GET['editar']) : 0;
 $produtos = mysqli_query($conexao, "SELECT * FROM produtos ORDER BY id DESC");
-
-/*
-COMPARAÇÃO:
-- Código de recados/pedidos: SELECT * FROM recados ORDER BY id DESC
-- Aqui seleciona produtos com imagens e preço
-*/
 ?>
 
 <!DOCTYPE html>
@@ -96,41 +70,111 @@ COMPARAÇÃO:
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div id="main">
-    <div id="geral">
-        <div id="header">
-            <h1>Moderar Produtos</h1>
+    <!-- Estrelas reais no fundo -->
+    <div class="star small" style="top: 5%; left: 10%; animation-delay: 0s;">★</div>
+    <div class="star medium" style="top: 12%; left: 25%; animation-delay: 1s;">★</div>
+    <div class="star small" style="top: 18%; left: 40%; animation-delay: 0.5s;">★</div>
+    <div class="star large" style="top: 22%; left: 55%; animation-delay: 1.5s;">★</div>
+    <div class="star medium" style="top: 30%; left: 70%; animation-delay: 0.7s;">★</div>
+    <div class="star small" style="top: 35%; left: 85%; animation-delay: 1.2s;">★</div>
+    <div class="star medium" style="top: 40%; left: 15%; animation-delay: 0.3s;">★</div>
+    <div class="star large" style="top: 45%; left: 30%; animation-delay: 1.8s;">★</div>
+    <div class="star small" style="top: 50%; left: 45%; animation-delay: 0.9s;">★</div>
+    <div class="star medium" style="top: 55%; left: 60%; animation-delay: 1.1s;">★</div>
+    <div class="star large" style="top: 60%; left: 75%; animation-delay: 0.4s;">★</div>
+    <div class="star small" style="top: 65%; left: 90%; animation-delay: 1.6s;">★</div>
+    <div class="star medium" style="top: 70%; left: 20%; animation-delay: 0.8s;">★</div>
+    <div class="star large" style="top: 75%; left: 35%; animation-delay: 1.3s;">★</div>
+    <div class="star small" style="top: 80%; left: 50%; animation-delay: 0.2s;">★</div>
+    <div class="star medium" style="top: 85%; left: 65%; animation-delay: 1.7s;">★</div>
+    <div class="star large" style="top: 90%; left: 80%; animation-delay: 0.6s;">★</div>
+    <div class="star small" style="top: 92%; left: 95%; animation-delay: 1.4s;">★</div>
+    <div class="star medium" style="top: 10%; left: 5%; animation-delay: 0.1s;">★</div>
+    <div class="star large" style="top: 25%; left: 50%; animation-delay: 1.9s;">★</div>
+    <div class="star small" style="top: 38%; left: 65%; animation-delay: 0.7s;">★</div>
+    <div class="star medium" style="top: 48%; left: 80%; animation-delay: 1.2s;">★</div>
+    <div class="star large" style="top: 58%; left: 10%; animation-delay: 0.3s;">★</div>
+    <div class="star small" style="top: 68%; left: 25%; animation-delay: 1.5s;">★</div>
+    <div class="star medium" style="top: 78%; left: 40%; animation-delay: 0.9s;">★</div>
+
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <div class="container">
+        <div class="header-card">
+            <h1>🛠️ Moderar Produtos</h1>
+            <p>Gerencie os produtos cadastrados no sistema</p>
         </div>
 
         <div class="produtos-container">
-            <?php while($res = mysqli_fetch_assoc($produtos)): ?>
-                <div class="produto">
-                    <p><strong>ID:</strong> <?= $res['id'] ?></p>
-                    <p><strong>Nome:</strong> <?= htmlspecialchars($res['nome']) ?></p>
-                    <p><strong>Preço:</strong> R$ <?= number_format($res['preco'], 2, ',', '.') ?></p>
-                    <p><strong>Descrição:</strong> <?= nl2br(htmlspecialchars($res['descricao'])) ?></p>
-                    <p><img src="<?= htmlspecialchars($res['imagem_url']) ?>" alt="<?= htmlspecialchars($res['nome']) ?>"></p>
+            <h2 class="produtos-title">📦 Produtos Cadastrados</h2>
+            
+            <?php if (mysqli_num_rows($produtos) > 0): ?>
+                <div class="produtos-grid">
+                    <?php while($res = mysqli_fetch_assoc($produtos)): ?>
+                        <div class="produto-card">
+                            <span class="produto-id">ID: <?= $res['id'] ?></span>
+                            <img src="<?= htmlspecialchars($res['imagem_url']) ?>" alt="<?= htmlspecialchars($res['nome']) ?>" class="produto-imagem">
+                            <h3 class="produto-nome"><?= htmlspecialchars($res['nome']) ?></h3>
+                            <div class="produto-preco">R$ <?= number_format($res['preco'], 2, ',', '.') ?></div>
+                            <p class="produto-descricao"><?= nl2br(htmlspecialchars($res['descricao'])) ?></p>
+                            
+                            <div class="acoes-produto">
+                                <a href="moderar.php?excluir=<?= $res['id'] ?>" class="btn-excluir" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
+                                
+                                <?php if($editar_id == $res['id']): ?>
+                                    <a href="moderar.php" class="btn-cancelar">Cancelar</a>
+                                <?php else: ?>
+                                    <a href="moderar.php?editar=<?= $res['id'] ?>" class="btn-editar">Editar</a>
+                                <?php endif; ?>
+                            </div>
 
-                    <!-- Link para excluir -->
-                    <a href="moderar.php?excluir=<?= $res['id'] ?>" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
-
-                    <!-- Formulário de edição inline -->
-                    <?php if($editar_id == $res['id']): ?>
-                        <form method="post" action="moderar.php">
-                            <input type="hidden" name="id" value="<?= $res['id'] ?>">
-                            <input type="text" name="nome" value="<?= htmlspecialchars($res['nome']) ?>" required><br>
-                            <textarea name="descricao" required><?= htmlspecialchars($res['descricao']) ?></textarea><br>
-                            <input type="number" step="0.01" name="preco" value="<?= $res['preco'] ?>" required><br>
-                            <input type="submit" name="editar" value="Salvar">
-                            <a href="moderar.php">Cancelar</a>
-                        </form>
-                    <?php else: ?>
-                        <a href="moderar.php?editar=<?= $res['id'] ?>">Editar</a>
-                    <?php endif; ?>
+                            <!-- Formulário de edição inline -->
+                            <?php if($editar_id == $res['id']): ?>
+                                <form method="post" action="moderar.php" class="form-edicao">
+                                    <input type="hidden" name="id" value="<?= $res['id'] ?>">
+                                    
+                                    <div class="form-group">
+                                        <label for="nome">Nome do Produto</label>
+                                        <input type="text" name="nome" value="<?= htmlspecialchars($res['nome']) ?>" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <textarea name="descricao" required><?= htmlspecialchars($res['descricao']) ?></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="preco">Preço (R$)</label>
+                                        <input type="number" step="0.01" name="preco" value="<?= $res['preco'] ?>" required>
+                                    </div>
+                                    
+                                    <div class="form-botoes">
+                                        <input type="submit" name="editar" value="Salvar" class="btn-salvar">
+                                        <a href="moderar.php" class="btn-cancelar">Cancelar</a>
+                                    </div>
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                    <?php endwhile; ?>
                 </div>
-            <?php endwhile; ?>
+            <?php else: ?>
+                <div class="sem-produtos">
+                    Nenhum produto cadastrado ainda.
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-</div>
+
+    <script>
+        // Confirmação de exclusão
+        document.querySelectorAll('.btn-excluir').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!confirm('Tem certeza que deseja excluir este produto?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -68,6 +68,83 @@ $produtos = mysqli_query($conexao, "SELECT * FROM produtos ORDER BY id DESC");
 <meta charset="utf-8"/>
 <title>Moderar Produtos</title>
 <link rel="stylesheet" href="style.css"/>
+<style>
+/* NOVOS ESTILOS PARA BOTÕES - BRANCOS E MENORES */
+
+/* Classe base para todos os botões */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Botão Excluir */
+.btn-excluir {
+    color: #d32f2f;
+}
+
+.btn-excluir:hover {
+    background: #ffebee;
+    box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+}
+
+/* Botão Editar */
+.btn-editar {
+    color: #1976d2;
+}
+
+.btn-editar:hover {
+    background: #e3f2fd;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.2);
+}
+
+/* Botão Cancelar */
+.btn-cancelar {
+    color: #616161;
+}
+
+.btn-cancelar:hover {
+    background: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(97, 97, 97, 0.2);
+}
+
+/* Botão Salvar */
+.btn-salvar {
+    color: #388e3c;
+}
+
+.btn-salvar:hover {
+    background: #e8f5e9;
+    box-shadow: 0 4px 8px rgba(56, 142, 60, 0.2);
+}
+
+/* Ícones para os botões */
+.btn i {
+    font-size: 0.9rem;
+}
+</style>
+
+<!-- Adicionar Font Awesome para os ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Estrelas reais no fundo -->
@@ -176,5 +253,6 @@ $produtos = mysqli_query($conexao, "SELECT * FROM produtos ORDER BY id DESC");
             });
         });
     </script>
+    
 </body>
 </html>
